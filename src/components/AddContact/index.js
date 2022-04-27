@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AddPost = ({ contacts, addContact }) => {
@@ -47,7 +47,14 @@ const AddPost = ({ contacts, addContact }) => {
     <div className="container-fluid">
       <h1 className="text-center text-dark py-3 display-2">დამატება</h1>
       <div className="row">
+        
         <div className="col-md-6 p-5 mx-auto shadow">
+        <button
+          className="btn btn-dark ml-auto my-5"
+          onClick={() => history.push("/")}
+        >
+          უკან დაბრუნება
+        </button>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <input
@@ -100,7 +107,7 @@ const AddPost = ({ contacts, addContact }) => {
 };
 
 const mapStateToProps = (state) => ({
-  contacts: state,
+  contacts: state.contactReducer,
 });
 const mapDispatchToProps = (dispatch) => ({
   addContact: (data) => {

@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import {Modal, Button} from 'react-bootstrap'
 
 const Home = ({ contacts, deleteContact }) => {
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const closeModal = (id) => {
+    deleteContact(id)
+  handleClose()
+  }
   return (
     <div className="container">
       <div className="row d-flex flex-column">
@@ -35,37 +45,53 @@ const Home = ({ contacts, deleteContact }) => {
                         to={`/edit/${contact.id}`}
                         className="btn btn-sm btn-primary mr-1"
                       >
-                        Edit
+                        შესწორება
                       </Link>
-                      <button
-                        type="button"
-                        onClick={() => deleteContact(contact.id)}
-                        className="btn btn-sm btn-danger"
-                      >
-                        Delete
-                      </button>
+                      <Button className="btn btn-sm btn-danger ml-1" variant="primary" onClick={handleShow}>
+                        წაშლა
+                      </Button>
+                      <Modal
+                                show={show}
+                                onHide={handleClose}
+                                backdrop="static"
+                                keyboard={false}
+                              >
+                                <Modal.Header>
+                                </Modal.Header>
+                                <Modal.Body>
+                                ნამდვილად გინდა წაშლა?
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <Button variant="secondary" onClick={handleClose}>
+                                    არა
+                                  </Button>
+                                  <Button  variant="primary" onClick={() => closeModal(contact.id)} >დიახ</Button>
+                                </Modal.Footer>
+                              </Modal>
+                     
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <th>No contacts found</th>
+                  <th>ცხრილი ცარიელია</th>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
       </div>
+                             
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  contacts: state,
+  contacts: state.contactReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteContact: (id) => {
+    deleteContact: (id) => {
     dispatch({ type: "DELETE_CONTACT", payload: id });
   },
 });

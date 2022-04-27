@@ -1,18 +1,52 @@
 const initialState = {
-    Token:null,
+    userData: null,
+    isLoading: false,
 }
 
-export const authReducer = ( state= initialState,action) => {
-    switch(action.type){
-        case "set-Auth":
+export const authReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case "SET-IS-LOADING":
             return {
                 ...state,
-                Token:action.payload,
+                isLoading: action.payload
             }
-     
-                default:return state;
+        case "SET-USER-DATA":
+            return {
+                ...state,
+                userData: action.payload
+            }
+        default:
+            return state;
     }
 }
 
-export const setTokenAC = (payload) => ({type :"set-Auth",payload})
+export const setIsLoading = (payload) => ({type: "SET-IS-LOADING", payload})
+export const setUserData = (payload) => ({type: "SET-USER-DATA", payload})
 
+
+export const AuthUser = (userData) => {
+    return dispatch => {
+        try{
+            dispatch(setIsLoading(true))
+            localStorage.setItem("jwt", "token")
+            dispatch(setUserData(userData))
+            dispatch(setIsLoading(false))
+
+        }catch (e){
+            console.log(e)
+        }
+    }
+}
+
+export const logOutUser = () => {
+    return dispatch => {
+        try{
+            dispatch(setIsLoading(true))
+            localStorage.removeItem("jwt")
+            dispatch(setIsLoading(false))
+
+        }catch (e){
+            console.log(e)
+        }
+    }
+}

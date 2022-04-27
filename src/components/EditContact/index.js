@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
+
 
 const EditContact = ({ contacts, updateContact }) => {
   const { id } = useParams();
@@ -42,7 +44,7 @@ const EditContact = ({ contacts, updateContact }) => {
       return toast.error("ეს სახელი უკვე არსებობს");
     }
     if (checkContactLastnameExists.length > 0) {
-      return toast.error("ს გვარი უკვე არსებობს");
+      return toast.error("ეს გვარი უკვე არსებობს");
     }
   const data = {
       id: currentContact.id,
@@ -59,13 +61,8 @@ const EditContact = ({ contacts, updateContact }) => {
   return (
     <div className="container">
       <div className="row d-flex flex-column">
-        <button
-          className="btn btn-dark ml-auto my-5"
-          onClick={() => history.push("/")}
-        >
-          უკან დაბრუნება
-        </button>
-        <div className="col-md-6 mx-auto shadow p-5">
+        
+        <div className="col-md-6 mx-auto shadow p-5 mt-5">
           {currentContact ? (
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -123,7 +120,7 @@ const EditContact = ({ contacts, updateContact }) => {
 };
 
 const mapStateToProps = (state) => ({
-  contacts: state,
+  contacts: state.contactReducer,
 });
 const mapDispatchToProps = (dispatch) => ({
   updateContact: (data) => {
